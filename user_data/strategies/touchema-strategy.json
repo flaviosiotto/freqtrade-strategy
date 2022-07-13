@@ -1,0 +1,31 @@
+{
+  "strategy_name": "TouchEmaStrategy",
+  "params": {
+    "roi": {
+      "0": 0.117,
+      "11": 0.037,
+      "47": 0.015,
+      "123": 0
+    },
+    "stoploss": {
+      "stoploss": -0.328
+    },
+    "buy": {
+      "buy_bars_delay": 86,
+      "buy_ema_period": 47
+    },
+    "sell": {
+      "sell_bars_delay": 63,
+      "sell_ema_period": 40
+    },
+    "protection": {},
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.078,
+      "trailing_stop_positive_offset": 0.11399999999999999,
+      "trailing_only_offset_is_reached": false
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2022-07-13 11:38:28.059102+00:00"
+}
