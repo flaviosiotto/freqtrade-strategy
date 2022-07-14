@@ -1,5 +1,6 @@
 {
   "strategy_name": "TouchEmaStrategy",
+  "timeframe": "5m",
   "params": {
     "roi": {
       "0": 0.117,
