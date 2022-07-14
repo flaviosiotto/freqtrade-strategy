@@ -6,6 +6,9 @@ from freqtrade.strategy import IStrategy, DecimalParameter, IntParameter
 import talib.abstract as ta
 
 class TouchEmaStrategy(IStrategy):
+
+    timeframe = "5m"
+
     buy_ema_period = IntParameter(40, 100, default=60, space="buy")
     buy_bars_delay = IntParameter(60, 120, default=60, space="buy")
 
