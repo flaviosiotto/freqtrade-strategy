@@ -112,7 +112,7 @@
         "verbosity": "error",
         "enable_openapi": false,
         "jwt_secret_key": "26dbb9621cc9865473078c4c99f971a7a561420f77310ced785fdf5dbb506c04",
-        "CORS_origins": [],
+        "CORS_origins": ["http://static.170.13.12.49.clients.your-server.de:8080"],
         "username": "freqtrader",
         "password": "freqtrader"
     },
