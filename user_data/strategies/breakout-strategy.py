@@ -10,6 +10,7 @@ import numpy as np
 class BreakoutStrategy(IStrategy):
 
     timeframe = "1m"
+    can_short = True
 
     buy_atr_period = IntParameter(2, 60, default=14, space="buy")
 
