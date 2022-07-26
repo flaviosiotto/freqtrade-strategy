@@ -60,11 +60,11 @@ class BreakoutStrategy(IStrategy):
         conditions_short = []
 
         conditions_long.append(
-                dataframe['close'] > dataframe['upper_peak']
+                dataframe['close'] > dataframe['upper_peak'].shift(1)
             )
 
         conditions_short.append(
-                dataframe['close'] < dataframe['lower_peak']
+                dataframe['close'] < dataframe['lower_peak'].shift(1)
             )
 
 
