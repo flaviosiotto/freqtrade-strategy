@@ -12,9 +12,9 @@ class BreakoutStrategy(IStrategy):
     timeframe = "1m"
     can_short = True
 
-    buy_atr_period = IntParameter(2, 60, default=14, space="buy")
+    buy_peak_order = IntParameter(10, 120, default=60, space="buy")
 
-    sell_atr_period = IntParameter(2, 60, default=14, space="sell")
+    sell_peak_order = IntParameter(10, 120, default=60, space="sell")
 
 
     # ROI table:
@@ -37,19 +37,21 @@ class BreakoutStrategy(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        ilocs_max = argrelextrema(dataframe['high'].values, np.greater_equal, order=60)[0]
-        dataframe.loc[
-            dataframe.iloc[ilocs_max].index,
-            'upper_peak'
-            ] = dataframe['high']
-        dataframe['upper_peak'].fillna(method='ffill', inplace=True)
+        for val in self.buy_peak_order.range:
+            ilocs_max = argrelextrema(dataframe['high'].values, np.greater_equal, order=val)[0]
+            dataframe.loc[
+                dataframe.iloc[ilocs_max].index,
+                f'upper_peak_{val}'
+                ] = dataframe['high']
+            dataframe[f'upper_peak_{val}'].fillna(method='ffill', inplace=True)
 
-        ilocs_min = argrelextrema(dataframe['low'].values, np.less_equal, order=60)[0]
-        dataframe.loc[
-            dataframe.iloc[ilocs_min].index,
-            'lower_peak'
-            ] = dataframe['low']
-        dataframe['lower_peak'].fillna(method='ffill', inplace=True)
+        for val in self.sell_peak_order.range:
+            ilocs_min = argrelextrema(dataframe['low'].values, np.less_equal, order=val)[0]
+            dataframe.loc[
+                dataframe.iloc[ilocs_min].index,
+                f'lower_peak_{val}'
+                ] = dataframe['low']
+            dataframe[f'lower_peak_{val}'].fillna(method='ffill', inplace=True)
 
         return dataframe
 
@@ -60,11 +62,11 @@ class BreakoutStrategy(IStrategy):
         conditions_short = []
 
         conditions_long.append(
-                dataframe['close'] > dataframe['upper_peak'].shift(1)
+                dataframe['close'] > dataframe[f'upper_peak_{self.buy_peak_order.value}'].shift(1)
             )
 
         conditions_short.append(
-                dataframe['close'] < dataframe['lower_peak'].shift(1)
+                dataframe['close'] < dataframe[f'lower_peak_{self.sell_peak_order.value}'].shift(1)
             )
 
 

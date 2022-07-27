@@ -1,0 +1,29 @@
+{
+  "strategy_name": "BreakoutStrategy",
+  "params": {
+    "trailing": {
+      "trailing_stop": true,
+      "trailing_stop_positive": 0.01,
+      "trailing_stop_positive_offset": 0.05,
+      "trailing_only_offset_is_reached": false
+    },
+    "buy": {
+      "buy_peak_order": 45
+    },
+    "sell": {
+      "sell_peak_order": 114
+    },
+    "protection": {},
+    "roi": {
+      "0": 0.09999999999999999,
+      "3": 0.026,
+      "14": 0.003,
+      "29": 0
+    },
+    "stoploss": {
+      "stoploss": -0.024
+    }
+  },
+  "ft_stratparam_v": 1,
+  "export_time": "2022-07-26 23:56:23.177342+00:00"
+}
