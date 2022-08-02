@@ -1,29 +1,29 @@
 {
   "strategy_name": "FakeoutStrategy",
   "params": {
-    "stoploss": {
-      "stoploss": -0.02
-    },
     "buy": {
-      "buy_peak_order": 41
+      "buy_peak_order": 69
     },
     "sell": {
-      "sell_peak_order": 51
+      "sell_peak_order": 27
     },
     "protection": {},
     "roi": {
-      "0": 0.04,
-      "8": 0.033,
-      "10": 0.009,
-      "27": 0
+      "0": 0.07,
+      "4": 0.036000000000000004,
+      "11": 0.015,
+      "34": 0
+    },
+    "stoploss": {
+      "stoploss": -0.073
     },
     "trailing": {
       "trailing_stop": true,
-      "trailing_stop_positive": 0.169,
-      "trailing_stop_positive_offset": 0.23600000000000002,
+      "trailing_stop_positive": 0.056,
+      "trailing_stop_positive_offset": 0.062,
       "trailing_only_offset_is_reached": true
     }
   },
   "ft_stratparam_v": 1,
-  "export_time": "2022-08-01 22:21:40.790365+00:00"
+  "export_time": "2022-08-02 05:46:38.810104+00:00"
 }
