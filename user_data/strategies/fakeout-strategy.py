@@ -12,9 +12,9 @@ class FakeoutStrategy(IStrategy):
     timeframe = "1m"
     can_short = True
 
-    buy_peak_order = IntParameter(10, 120, default=60, space="buy")
+    buy_peak_order = IntParameter(30, 180, default=60, space="buy")
 
-    sell_peak_order = IntParameter(10, 120, default=60, space="sell")
+    sell_peak_order = IntParameter(30, 180, default=60, space="sell")
 
 
     # ROI table:
