@@ -40,7 +40,7 @@ class FakeoutStrategy(IStrategy):
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
         for val in self.sell_peak_order.range:
-            ilocs_max = argrelextrema(dataframe['high'].values, np.greater_equal, order=val)[0]
+            ilocs_max = argrelextrema(dataframe['high'].values, np.greater_equal, order=val, mode='wrap')[0]
             dataframe.loc[
                 dataframe.iloc[ilocs_max].index,
                 f'upper_peak_{val}'
@@ -49,7 +49,7 @@ class FakeoutStrategy(IStrategy):
             dataframe[f'count_upper_peak_{val}'] = dataframe.apply( lambda x: self._count_over_level(x['high'], x[f'upper_peak_{val}']), axis=1 )
 
         for val in self.buy_peak_order.range:
-            ilocs_min = argrelextrema(dataframe['low'].values, np.less_equal, order=val)[0]
+            ilocs_min = argrelextrema(dataframe['low'].values, np.less_equal, order=val, mode='wrap')[0]
             dataframe.loc[
                 dataframe.iloc[ilocs_min].index,
                 f'lower_peak_{val}'
