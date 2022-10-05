@@ -88,6 +88,17 @@
             "n_estimators": 1000
         }
     },
+    "api_server": {
+        "enabled": true,
+        "listen_ip_address": "0.0.0.0",
+        "listen_port": 8080,
+        "verbosity": "error",
+        "enable_openapi": false,
+        "jwt_secret_key": "493aa5a699f20dfd87f39a8c23174266105ba4eb3dd4846620303ca0e690654f",
+        "CORS_origins": ["http://static.170.13.12.49.clients.your-server.de:8080"],
+        "username": "freqtrade",
+        "password": "freqtrade"
+    },
     "bot_name": "",
     "force_entry_enable": true,
     "initial_state": "running",
