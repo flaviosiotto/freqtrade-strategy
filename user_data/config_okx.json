@@ -75,7 +75,7 @@
         "verbosity": "error",
         "enable_openapi": false,
         "jwt_secret_key": "493aa5a699f20dfd87f39a8c23174266105ba4eb3dd4846620303ca0e690654f",
-        "CORS_origins": ["http://static.170.13.12.49.clients.your-server.de:8080"],
+        "CORS_origins": ["https://freqtrade.si8cloud.com"],
         "username": "freqtrade",
         "password": "freqtrade"
     },
