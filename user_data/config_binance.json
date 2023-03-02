@@ -60,7 +60,6 @@
             "SUSHI/USDT:USDT",
             "STMX/USDT:USDT", 
             "EOS/USDT:USDT", 
-            "SRM/USDT:USDT", 
             "RLC/USDT:USDT", 
             "LIT/USDT:USDT", 
             "COMP/USDT:USDT", 
@@ -69,11 +68,9 @@
             "EGLD/USDT:USDT", 
             "UNFI/USDT:USDT", 
             "ALICE/USDT:USDT", 
-            "TLM/USDT:USDT", 
             "BNB/USDT:USDT"
         ],
         "pair_blacklist": [
-            "BNB/BTC"
         ]
     },
     "pairlists": [
