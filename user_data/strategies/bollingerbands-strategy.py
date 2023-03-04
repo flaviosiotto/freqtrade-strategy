@@ -44,13 +44,13 @@ class BollingerBandStrategy(IStrategy):
         conditions_short = []
 
         conditions_long.append(
-                dataframe['close'] > dataframe['upperband']
+                dataframe['close'] < dataframe['lowerband']
             )
 
 
 
         conditions_short.append(
-                dataframe['close'] < dataframe['lowerband']
+                dataframe['close'] > dataframe['upperband']
             )
 
         dataframe.loc[
