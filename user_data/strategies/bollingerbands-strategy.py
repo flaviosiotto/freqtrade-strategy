@@ -2,21 +2,22 @@
 from pandas import DataFrame
 from functools import reduce
 from freqtrade.strategy import IStrategy
+from freqtrade.exchange import timeframe_to_minutes
+
 
 import talib.abstract as ta
 
 class BollingerBandStrategy(IStrategy):
 
     timeframe = "3m"
+    timeframe_mins = timeframe_to_minutes(timeframe)
 
     # ROI table:
     minimal_roi = {
         "0": 0.242,
-        "13": 0.044,
-        "51": 0.02,
-        "170": 0
+        str(timeframe_mins * 3): 0.01,  # 2% after 3 candles
+        str(timeframe_mins * 6): 0.00  # 1% After 6 candles
     }
-
     # Stoploss:
     stoploss = -0.1
 
