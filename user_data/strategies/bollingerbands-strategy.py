@@ -1,7 +1,7 @@
 
 from pandas import DataFrame
 from functools import reduce
-from freqtrade.strategy import IStrategy, IntParameter
+from freqtrade.strategy import IStrategy
 
 import talib.abstract as ta
 
@@ -26,12 +26,10 @@ class BollingerBandStrategy(IStrategy):
     trailing_stop_positive_offset = 0.05
     trailing_only_offset_is_reached = False
 
-    bars_delay_long = 0
-    bars_delay_short = 0
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        upperband, middleband, lowerband = ta.BBANDS(dataframe)
+        upperband, middleband, lowerband = ta.BBANDS(dataframe['close'])
         dataframe['upperband'] = upperband
         dataframe['middleband'] = middleband
         dataframe['lowerband'] = lowerband
