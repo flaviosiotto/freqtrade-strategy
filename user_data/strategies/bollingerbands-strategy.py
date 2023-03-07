@@ -44,7 +44,7 @@ class BollingerBandStrategy(IStrategy):
         close = dataframe['close']
         high = dataframe['high']
         low = dataframe['low']
-        close = dataframe['volume']
+        volume = dataframe['volume']
 
         return ( (close * 2) - high - low ) / ( (high - low) * volume )
 
