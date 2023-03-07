@@ -30,7 +30,10 @@ class BollingerBandStrategy(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        upperband, middleband, lowerband = ta.BBANDS(dataframe['close'])
+        upperband, middleband, lowerband = ta.BBANDS(
+            dataframe['close'],
+            timeperiod=20
+            )
         dataframe['upperband'] = upperband
         dataframe['middleband'] = middleband
         dataframe['lowerband'] = lowerband
