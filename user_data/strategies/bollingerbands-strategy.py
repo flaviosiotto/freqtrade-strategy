@@ -35,8 +35,18 @@ class BollingerBandStrategy(IStrategy):
         dataframe['middleband'] = middleband
         dataframe['lowerband'] = lowerband
 
+        dataframe['iii'] = self.intraday_intensity_index(dataframe)
+
         return dataframe
 
+
+    def intraday_intensity_index(self, dataframe):
+        close = dataframe['close']
+        high = dataframe['high']
+        low = dataframe['low']
+        close = dataframe['volume']
+
+        return ( (close * 2) - high - low ) / ( (high - low) * volume )
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -44,14 +54,18 @@ class BollingerBandStrategy(IStrategy):
         conditions_short = []
 
         conditions_long.append(
-                dataframe['close'] < dataframe['lowerband']
-            )
-
-
+            dataframe['close'] < dataframe['lowerband']
+        )
+        conditions_long.append(
+            (dataframe['volume'] > 0)
+        )
 
         conditions_short.append(
                 dataframe['close'] > dataframe['upperband']
             )
+        conditions_short.append(
+            (dataframe['volume'] > 0)
+        )
 
         dataframe.loc[
             (
