@@ -4,6 +4,7 @@ from functools import reduce
 from freqtrade.strategy import IStrategy
 from freqtrade.exchange import timeframe_to_minutes
 
+import logging
 
 import talib.abstract as ta
 
@@ -30,6 +31,7 @@ class BollingerBandStrategy(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
+        logging.info(dataframe['date'])
         upperband, middleband, lowerband = ta.BBANDS(
             dataframe['close'],
             timeperiod=20
@@ -39,7 +41,7 @@ class BollingerBandStrategy(IStrategy):
         dataframe['lowerband'] = lowerband
 
         dataframe['iii'] = self.intraday_intensity_index(dataframe)
-
+        dataframe['money_flow'] = dataframe['iii'].rolling(window=21).sum() / dataframe['close'].rolling(window=21).sum()
         return dataframe
 
 
@@ -49,7 +51,7 @@ class BollingerBandStrategy(IStrategy):
         low = dataframe['low']
         volume = dataframe['volume']
 
-        return ( (close * 2) - high - low ) / ( (high - low) * volume )
+        return ( (close * 2) - high - low ) / ( (high - low) ) * volume
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -62,10 +64,16 @@ class BollingerBandStrategy(IStrategy):
         conditions_long.append(
             (dataframe['volume'] > 0)
         )
+        conditions_long.append(
+            (dataframe['money_flow'] > 0)
+        )
 
         conditions_short.append(
                 dataframe['close'] > dataframe['upperband']
             )
+        conditions_long.append(
+            (dataframe['money_flow'] < 0)
+        )
         conditions_short.append(
             (dataframe['volume'] > 0)
         )
