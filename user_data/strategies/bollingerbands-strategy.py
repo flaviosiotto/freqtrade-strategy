@@ -71,7 +71,7 @@ class BollingerBandStrategy(IStrategy):
         conditions_short.append(
                 dataframe['close'] > dataframe['upperband']
             )
-        conditions_long.append(
+        conditions_short.append(
             (dataframe['money_flow'] < 0)
         )
         conditions_short.append(
