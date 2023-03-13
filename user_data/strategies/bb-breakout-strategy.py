@@ -41,7 +41,7 @@ class BBBreakoutStrategy(IStrategy):
         dataframe['lowerband'] = lowerband
 
         dataframe['iii'] = self.intraday_intensity_index(dataframe)
-        dataframe['money_flow'] = dataframe['iii'].rolling(window=21).sum() / dataframe['close'].rolling(window=21).sum()
+        dataframe['iii_sum'] = dataframe['iii'].rolling(window=21).sum()
         return dataframe
 
 
@@ -65,7 +65,7 @@ class BBBreakoutStrategy(IStrategy):
             (dataframe['volume'] > 0)
         )
         conditions_long.append(
-            (dataframe['money_flow'] > 0)
+            (dataframe['iii_sum'] > 0)
         )
         conditions_long.append(
             (dataframe['iii'] > 0)
@@ -75,7 +75,7 @@ class BBBreakoutStrategy(IStrategy):
                 dataframe['close'] < dataframe['lowerband']
             )
         conditions_short.append(
-            (dataframe['money_flow'] < 0)
+            (dataframe['iii_sum'] < 0)
         )
         conditions_short.append(
             (dataframe['volume'] > 0)
