@@ -103,13 +103,13 @@ class BBBreakoutStrategy(IStrategy):
                 (dataframe['close'] < dataframe['middleband']) &
                 (dataframe['volume'] > 0)
             ),
-            'exit_long', 'exit_tag'] = (1, 'middleband_reached')
+            ['exit_long', 'exit_tag']] = (1, 'middleband_reached')
 
         dataframe.loc[
             (
                 (dataframe['close'] > dataframe['middleband']) &
                 (dataframe['volume'] > 0)
             ),
-            'exit_short', 'exit_tag'] = (1, 'middleband_reached')
+            ['exit_short', 'exit_tag']] = (1, 'middleband_reached')
 
         return dataframe
