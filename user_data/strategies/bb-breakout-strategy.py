@@ -3,6 +3,7 @@ from pandas import DataFrame
 from functools import reduce
 from freqtrade.strategy import IStrategy
 from freqtrade.exchange import timeframe_to_minutes
+import freqtrade.vendor.qtpylib.indicators as qtpylib
 
 import logging
 
@@ -39,6 +40,8 @@ class BBBreakoutStrategy(IStrategy):
         dataframe['middleband'] = middleband
         dataframe['lowerband'] = lowerband
 
+        dataframe['trend_begin'] = dataframe.apply( lambda x: self._count_trend(x['close'], x['middleband'], x['lowerband'], x['upperband']), axis=1 )
+
         dataframe['iii'] = self.intraday_intensity_index(dataframe)
         dataframe['iii_sum'] = dataframe['iii'].rolling(window=21).sum()
         return dataframe
@@ -51,6 +54,17 @@ class BBBreakoutStrategy(IStrategy):
         volume = dataframe['volume']
 
         return ( (close * 2) - high - low ) / ( (high - low) ) * volume
+
+    def _count_trend(self, close, middleband, upperband, lowerband):
+
+        if qtpylib.crossed(close, middleband):
+            self.count_trend = 0
+
+        if close > upperband or close < lowerband:
+            self.count_trend = self.count_trend + 1
+
+        return self.count_trend
+
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -96,6 +110,7 @@ class BBBreakoutStrategy(IStrategy):
             'enter_short'] = 1
 
         return dataframe
+
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
         dataframe.loc[
