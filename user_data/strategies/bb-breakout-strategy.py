@@ -17,7 +17,7 @@ class BBBreakoutStrategy(IStrategy):
     minimal_roi = {
         "0": 0.242,
         str(timeframe_mins * 3): 0.01,  # 2% after 3 candles
-        str(timeframe_mins * 6): -0.99  # Exit after After 6 candles
+        str(timeframe_mins * 18): -0.99  # Exit after After 6 candles
     }
     # Stoploss:
     stoploss = -0.1
@@ -99,5 +99,18 @@ class BBBreakoutStrategy(IStrategy):
         return dataframe
 
     def populate_exit_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
+        dataframe.loc[
+            (
+                (dataframe['close'] < dataframe['middleband']) &
+                (dataframe['volume'] > 0)
+            ),
+            'exit_long', 'exit_tag']] = (1, 'middleband_reached')
 
-        return super().populate_exit_trend(dataframe, metadata)
+        dataframe.loc[
+            (
+                (dataframe['close'] > dataframe['middleband']) &
+                (dataframe['volume'] > 0)
+            ),
+            'exit_short', 'exit_tag']] = (1, 'middleband_reached')
+
+        return dataframe
