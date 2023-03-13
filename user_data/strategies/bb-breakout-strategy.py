@@ -29,6 +29,8 @@ class BBBreakoutStrategy(IStrategy):
     trailing_stop_positive_offset = 0.05
     trailing_only_offset_is_reached = False
 
+    count_uptrend = 0
+    count_downtrend = 0
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
@@ -40,7 +42,13 @@ class BBBreakoutStrategy(IStrategy):
         dataframe['middleband'] = middleband
         dataframe['lowerband'] = lowerband
 
-        dataframe['trend_begin'] = dataframe.apply( lambda x: self._count_trend(x['close'], x['middleband'], x['lowerband'], x['upperband']), axis=1 )
+        dataframe['begin_uptrend'] = dataframe.apply(
+            lambda x: self._count_uptrend(x['close'], x['middleband'], x['upperband']), axis=1
+        )
+
+        dataframe['begin_downtrend'] = dataframe.apply(
+            lambda x: self._count_uptrend(x['close'], x['middleband'], x['lowerband']), axis=1
+        )
 
         dataframe['iii'] = self.intraday_intensity_index(dataframe)
         dataframe['iii_sum'] = dataframe['iii'].rolling(window=21).sum()
@@ -55,15 +63,25 @@ class BBBreakoutStrategy(IStrategy):
 
         return ( (close * 2) - high - low ) / ( (high - low) ) * volume
 
-    def _count_trend(self, close, middleband, upperband, lowerband):
+    def _count_uptrend(self, close, middleband, upperband):
 
-        if qtpylib.crossed(close, middleband):
-            self.count_trend = 0
+        if close < middleband:
+            self.count_uptrend = 0
 
-        if close > upperband or close < lowerband:
-            self.count_trend = self.count_trend + 1
+        if close > upperband:
+            self.count_uptrend = self.count_uptrend + 1
 
-        return self.count_trend
+        return self.count_uptrend
+
+    def _count_downtrend(self, close, middleband, lowerband):
+
+        if close > middleband:
+            self.count_downtrend = 0
+
+        if close < lowerband:
+            self.count_downtrend = self.count_downtrend + 1
+
+        return self.count_downtrend
 
 
     def populate_entry_trend(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
@@ -83,6 +101,9 @@ class BBBreakoutStrategy(IStrategy):
         conditions_long.append(
             (dataframe['iii'] > 0)
         )
+        conditions_long.append(
+            (dataframe['begin_uptrend'] == 1)
+        )
 
         conditions_short.append(
                 dataframe['close'] < dataframe['lowerband']
@@ -95,6 +116,9 @@ class BBBreakoutStrategy(IStrategy):
         )
         conditions_short.append(
             (dataframe['iii'] < 0)
+        )
+        conditions_short.append(
+            (dataframe['begin_downtrend'] == 1)
         )
 
         dataframe.loc[
