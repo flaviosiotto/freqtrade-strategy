@@ -17,7 +17,7 @@ class BBBreakoutStrategy(IStrategy):
     minimal_roi = {
         "0": 0.242,
         str(timeframe_mins * 3): 0.01,  # 2% after 3 candles
-        str(timeframe_mins * 6): 0.00  # 1% After 6 candles
+        str(timeframe_mins * 6): -0.99  # Exit after After 6 candles
     }
     # Stoploss:
     stoploss = -0.1
