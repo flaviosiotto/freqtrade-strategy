@@ -17,7 +17,7 @@ class BBBreakoutStrategy(IStrategy):
     # ROI table:
     minimal_roi = {
         "0": 0.242,
-        str(timeframe_mins * 3): 0.01,  # 2% after 3 candles
+        str(timeframe_mins * 3): 0.025,  # 2% after 3 candles
         str(timeframe_mins * 18): -0.99  # Exit after After 6 candles
     }
     # Stoploss:
@@ -47,7 +47,7 @@ class BBBreakoutStrategy(IStrategy):
         )
 
         dataframe['begin_downtrend'] = dataframe.apply(
-            lambda x: self._count_uptrend(x['close'], x['middleband'], x['lowerband']), axis=1
+            lambda x: self._count_downtrend(x['close'], x['middleband'], x['lowerband']), axis=1
         )
 
         dataframe['iii'] = self.intraday_intensity_index(dataframe)
