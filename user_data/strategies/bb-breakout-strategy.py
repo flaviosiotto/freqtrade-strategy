@@ -31,7 +31,6 @@ class BBBreakoutStrategy(IStrategy):
 
     def populate_indicators(self, dataframe: DataFrame, metadata: dict) -> DataFrame:
 
-        logging.info(dataframe['date'])
         upperband, middleband, lowerband = ta.BBANDS(
             dataframe['close'],
             timeperiod=20
@@ -104,13 +103,13 @@ class BBBreakoutStrategy(IStrategy):
                 (dataframe['close'] < dataframe['middleband']) &
                 (dataframe['volume'] > 0)
             ),
-            'exit_long', 'exit_tag']] = (1, 'middleband_reached')
+            'exit_long', 'exit_tag'] = (1, 'middleband_reached')
 
         dataframe.loc[
             (
                 (dataframe['close'] > dataframe['middleband']) &
                 (dataframe['volume'] > 0)
             ),
-            'exit_short', 'exit_tag']] = (1, 'middleband_reached')
+            'exit_short', 'exit_tag'] = (1, 'middleband_reached')
 
         return dataframe
